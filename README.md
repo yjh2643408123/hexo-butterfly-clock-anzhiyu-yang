@@ -57,23 +57,23 @@
 
     `qweather_key`申请地址: https://id.qweather.com/#/login
     1. 登录后进入控制台
-    ![和风天气控制台]()
+    ![和风天气控制台](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng1.webp)
     2. 创建应用
-    ![创建和风天气应用]()
+    ![创建和风天气应用](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng2.webp)
     3. 填写应用名称和key名称随意
     4. 选择WebApi
-    ![选择WebApi]()
+    ![选择WebApi](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng3.webp)
     5. 复制key
-    ![复制key]()
+    ![复制key](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng4.webp)
 
     `gaud_map_key` 申请地址: https://lbs.amap.com/
     6. 登录后进入控制台
     7. 创建应用，名称随意，类型选其他
-    ![创建应用]()
+    ![创建应用](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/gaode1.webp)
     8. 点击添加, `key`名称随意，`服务平台`选择`Web服务`,点击提交
-    ![Web服务]()
+    ![Web服务](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/gaode2.webp)
     9. 复制key
-    ![复制key]()
+    ![复制key](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/gaode3.webp)
 
 4. 参数释义
 
@@ -94,4 +94,4 @@
   |default_rectangle|【可选】和风天气key|【可选】开启后将一直显示 rectangle 位置的天气，否则将获取访问者的地理位置与天气|
   |rectangle|【可选】高得地图web服务key|【可选】获取访问者位置失败时会显示该位置的天气，同时该位置为开启 default_rectangle 后的位置|
 # 截图
-![截图]()
+![截图](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/%E6%95%88%E6%9E%9C.webp)
