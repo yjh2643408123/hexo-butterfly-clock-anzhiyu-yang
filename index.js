@@ -4,6 +4,7 @@ const pluginname = 'butterfly_clock_anzhiyu'
 // 全局声明依赖
 const pug = require('pug')
 const path = require('path')
+const fs = require('fs')
 const urlFor = require('hexo-util').url_for.bind(hexo)
 const util = require('hexo-util')
 
@@ -19,16 +20,75 @@ hexo.extend.filter.register('after_generate', function (locals) {
       layout_type: config.layout.type,
       layout_name: config.layout.name,
       layout_index: config.layout.index ? config.layout.index : 0,
-      loading: config.loading ? urlFor(config.loading) : "https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif",
-      clock_css: config.clock_css ? urlFor(config.clock_css) : "https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css",
-      clock_js: config.clock_js ? urlFor(config.clock_js) : "https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js",
+      loading: config.loading ? urlFor(config.loading) : urlFor('/images/loading.gif'),
+      clock_css: config.clock_css ? urlFor(config.clock_css) : urlFor('/css/clock.min.css'),
+      clock_js: config.clock_js ? urlFor(config.clock_js) : urlFor('/js/clock.js'),
       // 移除失效的IP API加载
       //ip_api: config.ip_api ? urlFor(config.ip_api) : "https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0",
       qweather_key: config.qweather_key ? config.qweather_key : "b16a1fa0e63c46a4b8f28abfb06ae3fe",
       gaud_map_key: config.gaud_map_key ? config.gaud_map_key : "e2b04289e870b005374ee030148d64fd&s=rsv3",
-      default_rectangle_enable: config.default_rectangle ? config.default_rectangle : false,
+      default_rectangle_enable: config.default_rectangle ? 'true' : 'false',
       rectangle: config.rectangle ? config.rectangle : "112.6534116,27.96920845",
     }
+  
+  // 复制clock.js文件到public/js目录
+  const sourceClockJs = path.join(__dirname, './lib/clock.js')
+  const targetDir = path.join(hexo.public_dir, 'js')
+  const targetClockJs = path.join(targetDir, 'clock.js')
+  
+  // 确保目标目录存在
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
+  
+  // 复制clock.js文件
+  if (fs.existsSync(sourceClockJs)) {
+    fs.copyFileSync(sourceClockJs, targetClockJs)
+  }
+  
+  // 复制loading.gif文件
+  const sourceLoadingGif = path.join(__dirname, './lib/loading.gif')
+  const targetImagesDir = path.join(hexo.public_dir, 'images')
+  const targetLoadingGif = path.join(targetImagesDir, 'loading.gif')
+  
+  if (!fs.existsSync(targetImagesDir)) {
+    fs.mkdirSync(targetImagesDir, { recursive: true })
+  }
+  
+  if (fs.existsSync(sourceLoadingGif)) {
+    fs.copyFileSync(sourceLoadingGif, targetLoadingGif)
+  }
+  
+  // 复制clock.min.css文件
+  const sourceClockCss = path.join(__dirname, './lib/clock.min.css')
+  const targetCssDir = path.join(hexo.public_dir, 'css')
+  const targetClockCss = path.join(targetCssDir, 'clock.min.css')
+  
+  if (!fs.existsSync(targetCssDir)) {
+    fs.mkdirSync(targetCssDir, { recursive: true })
+  }
+  
+  if (fs.existsSync(sourceClockCss)) {
+    fs.copyFileSync(sourceClockCss, targetClockCss)
+  }
+  
+  // 复制字体文件到 public/css/fonts 目录
+  const fontsSourceDir = path.join(__dirname, 'lib', 'fonts')
+  const fontsDestDir = path.join(hexo.public_dir, 'css', 'fonts')
+  if (!fs.existsSync(fontsDestDir)) {
+    fs.mkdirSync(fontsDestDir, { recursive: true })
+  }
+  
+  // 复制所有字体文件
+  const fontFiles = ['qweather-icons.ttf', 'qweather-icons.woff', 'qweather-icons.woff2']
+  fontFiles.forEach(fontFile => {
+    const fontSourcePath = path.join(fontsSourceDir, fontFile)
+    const fontDestPath = path.join(fontsDestDir, fontFile)
+    if (fs.existsSync(fontSourcePath)) {
+      fs.copyFileSync(fontSourcePath, fontDestPath)
+    }
+  })
+  
   // 渲染页面
   const temple_html_text = config.temple_html ? config.temple_html : pug.renderFile(path.join(__dirname, './lib/html.pug'),data)
   //cdn资源声明
@@ -59,7 +119,7 @@ hexo.extend.filter.register('after_generate', function (locals) {
   function ${pluginname}_injector_config(){
     var parent_div_git = ${get_layout};
     var item_html = '${temple_html_text}';
-    console.log('已挂载${pluginname}')
+    console.log('已挂载butterfly_clock_anzhiyu-yang修复版')
     if(parent_div_git) {
       parent_div_git.insertAdjacentHTML("afterbegin",item_html)
     }
