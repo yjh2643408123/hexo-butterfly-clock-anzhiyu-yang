@@ -1,97 +1,104 @@
 # hexo-butterfly-clock-anzhiyu-yang
 
-这是基于 [hexo-butterfly-clock-anzhiyu](https://github.com/anzhiyu-c/hexo-butterfly-clock-anzhiyu) 项目修改而来的版本，为 `hexo-theme-butterfly` 添加 [侧边栏电子钟](https://anzhiy.cn/posts/fc18.html)。
+为 Hexo 的 Butterfly、Anzhiyu、Solitude 主题添加侧栏日期、电子钟与天气卡片。兼容 Hexo 7 和 Hexo 8，支持整页加载、PJAX，以及 Solitude 4 的导航生命周期。
 
-## 原项目说明
-原项目 `hexo-butterfly-clock-anzhiyu` 由 [anzhiyu-c](https://github.com/anzhiyu-c) 开发，此版本在原项目基础上进行了修改和优化。
+基于 [anzhiyu-c/hexo-butterfly-clock-anzhiyu](https://github.com/anzhiyu-c/hexo-butterfly-clock-anzhiyu) 修改，采用 Apache-2.0 许可证。天气图标来自 [QWeather Icons](https://icons.qweather.com/)，图标授权为 CC BY 4.0，字体样式代码为 MIT。
 
-删除了[原作者](https://github.com/anzhiyu-c/hexo-butterfly-clock-anzhiyu)无效的获取ip地址的代码
+## 安装
 
-## 许可证声明
-本项目采用 Apache 2.0 许可证，详细内容请查看 [LICENSE](https://www.apache.org/licenses/LICENSE-2.0) 文件。
+在博客根目录执行：
 
-# 安装
-
-1. 如果有安装店长的插件版侧边栏电子钟（与店长的电子钟冲突）或者anzhiyu的插件（因和风天气关闭了api地址，会拖慢页面的加载速度），在博客根目录`[Blogroot]`下打开终端，运行以下指令
-```bash
-  # 卸载原版电子钟
-  npm uninstall hexo-butterfly-clock
-  # 卸载anzhiyu的插件版电子钟
-  npm uninstall hexo-butterfly-clock-anzhiyu --save
+```sh
+npm install hexo-butterfly-clock-anzhiyu-yang
 ```
 
-2. 安装本插件,在博客根目录`[Blogroot]`下打开终端，运行以下指令：
+如果已安装其他版本的侧栏时钟插件，先卸载对应插件，避免重复卡片。已经将时钟脚本单独写入博客的用户，请在切换到本插件后移除那份单独注入的脚本。
 
-```bash
-  # 安装插件
-  npm install hexo-butterfly-clock-anzhiyu-yang --save
+## 配置
+
+将以下配置加入博客根目录的 `_config.yml`，也可放在主题配置中。站点配置优先；未填写的字段沿用主题配置。
+
+```yaml
+electric_clock:
+  enable: true
+  enable_page: all
+  exclude: []
+  layout:
+    type: auto
+  # 不填写密钥时只显示日期、时间和“天气未配置”，不会请求定位或天气接口。
+  qweather_key: ""
+  gaud_map_key: ""
+  # 在自己的站点配置中填写和风天气控制台分配的 API Host。
+  qweather_host: ""
+  # 兼容原插件的城市实时天气 v7 返回格式。
+  qweather_path: /v7/weather/now
+  default_rectangle: false
+  # 可选，经度,纬度；作为固定位置或 IP 定位失败时的备用位置。
+  rectangle: ""
 ```
 
-3. 添加配置信息，以下为写法示例。
-   在站点配置文件 _config.yml 或者主题配置文件 _config.butterfly.yml 中添加：
+插件、示例和 npm 包均不提供公共或私人 API key，也不提供默认地理坐标。只需时钟时无需申请任何天气服务。
 
-   ```yml
-      # electric_clock
-      # see https://anzhiy.cn/posts/fc18.html
-      electric_clock:
-        enable: true # 开关
-        priority: 5 #过滤器优先权
-        enable_page: all # 应用页面
-        exclude:
-          # - /posts/
-          # - /about/
-        layout: # 挂载容器类型
-          type: class
-          name: sticky_layout
-          index: 0
-        loading: https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif #加载动画自定义
-        clock_css: https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css
-        clock_js: https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.js
-        qweather_key:  # 和风天气key
-        gaud_map_key:  # 高得地图web服务key
-        default_rectangle: false # 开启后将一直显示rectangle位置的天气，否则将获取访问者的地理位置与天气
-        rectangle: 112.6534116,27.96920845 # 获取访问者位置失败时会显示该位置的天气，同时该位置为开启default_rectangle后的位置
-   ```
+使用天气功能时，在自己的站点中填写和风天气 API key；自动定位另需高德 Web 服务 key。也可仅填写 `rectangle` 与和风 key，跳过高德定位，城市显示“默认位置”。`default_rectangle: true` 始终使用配置坐标。
 
-   其中`qweather_key`和`gaud_map_key`最好自己去申请对应的 API key，默认使用原作者的，可能会被限制，不保证可靠性。
+新账户应使用控制台分配的 `qweather_host`，支持纯主机名或完整 HTTPS 地址。该字段留空时，为兼容旧配置仍使用原官方共享域名；旧共享域名正在停用，具体可用性取决于天气服务账户。参见 [API Host](https://dev.qweather.com/docs/configuration/api-host/)、[身份认证](https://dev.qweather.com/docs/configuration/authentication/) 和 [城市实时天气 v7](https://dev.qweather.com/docs/api/weather/weather-now-webapi-v7/)。本插件的返回数据适配器目前使用 v7 格式，不能仅把路径替换成不同格式的 v1 接口。
 
-    `qweather_key`申请地址: https://id.qweather.com/#/login
-    1. 登录后进入控制台
-    ![和风天气控制台](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng1.webp)
-    2. 创建应用
-    ![创建和风天气应用](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng2.webp)
-    3. 填写应用名称和key名称随意
-    4. 选择WebApi
-    ![选择WebApi](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng3.webp)
-    5. 复制key
-    ![复制key](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/hefeng4.webp)
+站点配置的浏览器 API key 会随页面发送给访问者。不要把服务端私钥或 JWT 签名私钥填入此处，也不要把自己的密钥提交到公开仓库。需要保密凭据时应由自己的服务端代理请求。
 
-    `gaud_map_key` 申请地址: https://lbs.amap.com/
-    6. 登录后进入控制台
-    7. 创建应用，名称随意，类型选其他
-    ![创建应用](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/gaode1.webp)
-    8. 点击添加, `key`名称随意，`服务平台`选择`Web服务`,点击提交
-    ![Web服务](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/gaode2.webp)
-    9. 复制key
-    ![复制key](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/gaode3.webp)
+## 主题与页面切换
 
-4. 参数释义
+`layout.type: auto` 优先挂载到 `#aside-content .sticky_layout`，再回退到 `#aside-content`，适用于 Butterfly、Anzhiyu 与 Solitude。无需修改主题源码。
 
-  |参数|备选值/类型|释义|
-  |:--|:--|:--|
-  |priority|number|【可选】过滤器优先级，数值越小，执行越早，默认为10，选填|
-  |enable|true/false|【必选】控制开关|
-  |enable_page|path|【可选】填写想要应用的页面,如根目录就填'/',分类页面就填'/categories/'。若要应用于所有页面，就填`all`，默认为`all`|
-  |exclude|path|【可选】填写想要屏蔽的页面，可以多个。写法见示例。原理是将屏蔽项的内容逐个放到当前路径去匹配，若当前路径包含任一屏蔽项，则不会挂载。|
-  |layout.type|id/class|【可选】挂载容器类型，填写id或class，不填则默认为id|
-  |layout.name|text|【必选】挂载容器名称|
-  |layout.index|0和正整数|【可选】前提是layout.type为class，因为同一页面可能有多个class，此项用来确认究竟排在第几个顺位|
-  |loading|URL|【可选】电子钟加载动画的图片|
-  |clock_css|URL|【可选】电子钟样式CDN资源|
-  |clock_js|URL|【可选】电子钟执行脚本CDN资源|
-  |qweather_key|【可选】和风天气key|【可选】和风天气 key（默认使用anzhiyu-c的）|
-  |gaud_map_key|【可选】高得地图web服务key|【可选】高得地图 web 服务 key（默认使用anzhiyu-c的）|
-  |default_rectangle|【可选】和风天气key|【可选】开启后将一直显示 rectangle 位置的天气，否则将获取访问者的地理位置与天气|
-  |rectangle|【可选】高得地图web服务key|【可选】获取访问者位置失败时会显示该位置的天气，同时该位置为开启 default_rectangle 后的位置|
-# 截图
-![截图](https://imjianhao.cn/2025/02/22/%E7%BB%99hexo-theme-butterfly%E6%B7%BB%E5%8A%A0%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%94%B5%E5%AD%90%E9%92%9F/%E6%95%88%E6%9E%9C.webp)
+`aside: false` 或主题未生成侧栏的页面不会添加卡片。主题自己的移动端侧栏显示规则继续生效，例如 Solitude 在窄屏下会隐藏部分卡片。
+
+脚本重复执行和连续导航不会增加卡片、事件监听或计时器。天气结果缓存 10 分钟，切页时复用进行中的请求；每个请求最多等待 8 秒。接口失败或超时时仍显示本地日期与时间。
+
+## 原有配置兼容
+
+以下字段继续支持：
+
+| 配置 | 含义 |
+| --- | --- |
+| `enable` | 插件开关，默认关闭。 |
+| `priority` | HTML 过滤器优先级，默认 10。 |
+| `enable_page` | `all` 表示所有页面；单个字符串保持旧版精确路径匹配。新增数组形式按各目录前缀匹配。 |
+| `exclude` | 字符串或数组，保持旧版非空子串排除规则；优先于启用规则。 |
+| `layout.type` | `auto`、`id`、`class`，或新增的 `selector`。有 name 但未填 type 时沿用旧版 id 查找。 |
+| `layout.name` | 元素 ID、类名或 CSS 选择器。 |
+| `layout.index` | `class` / `selector` 匹配的索引，从 0 开始。 |
+| `clock_js` / `clock_css` | 自定义脚本、样式 URL；留空使用包内本地资源。 |
+| `loading` | 供旧版自定义模板使用的加载图地址；默认模板直接显示占位时钟。 |
+| `temple_html` | 保留原拼写的自定义卡片 HTML，须包含 `#hexo_electric_clock`。 |
+| `qweather_key` / `gaud_map_key` | 用户自行配置的服务 key，默认空。 |
+| `default_rectangle` / `rectangle` | 固定坐标开关及备用坐标，默认无坐标。 |
+| `qweather_host` / `qweather_path` | 新增，天气主机及返回 v7 格式的路径。 |
+
+部署在子目录（如 `root: /blog/`）时，包内资源自动带上站点前缀；页面规则既可写站点相对路径，也可写包含 root 的完整路径。
+
+旧配置可原样保留：
+
+```yaml
+layout:
+  type: class
+  name: sticky_layout
+  index: 0
+```
+
+自定义 `clock_js` 会替换包内运行脚本，其自身的 PJAX 兼容性由该脚本负责。包内仍暴露原有天气配置全局变量，以便旧自定义脚本读取。
+
+## 开发与验证
+
+开发测试需要 Node.js 20.19 或更高版本，以运行 Hexo 8；插件运行时仍兼容 Hexo 7 的 Node.js 要求。
+
+```sh
+npm ci
+npm run build:assets
+npm test
+npm run test:integration
+npm run test:package
+npm pack --dry-run
+```
+
+集成测试使用独立临时站点启动 Hexo server，不调用部署命令。测试矩阵覆盖 Hexo 7.3.0 / 8.1.2 与 Anzhiyu 1.7.0 / Solitude 4.0.0；检查首页、文章、资源路由、子目录和 watch 更新。临时站点和服务由测试结束清理。
+
+npm 包只包含运行所需的 `index.js`、`lib/`、包信息、README 与许可证；不包含测试站点、测试配置、日志或开发依赖。

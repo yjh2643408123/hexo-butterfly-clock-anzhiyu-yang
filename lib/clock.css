@@ -1,77 +1,137 @@
 @font-face {
-    font-family: UnidreamLED;
-    src: url(https://cdn.cbd.int/anzhiyu-blog/fonts/UnidreamLED.ttf);
-    font-display: swap;
-}
-@font-face {
-  font-family: "qweather-icons";
+  font-family: "HexoElectricClockWeather";
   src: url("./fonts/qweather-icons.woff2") format("woff2"),
-url("./fonts/qweather-icons.woff") format("woff"),
-url("./fonts/qweather-icons.ttf") format("truetype");
+    url("./fonts/qweather-icons.woff") format("woff"),
+    url("./fonts/qweather-icons.ttf") format("truetype");
+  font-display: swap;
 }
 
-span.card-clock-weather,
-.card-clock-location,
-.card-clock-windDir {
-  font-family: 'ZhuZiAYuanJWD';
-}
-span.temp {
-  font-family: UnidreamLED;
-}
-#hexo_electric_clock {
-  padding: 20px;
-}
+/* Keep theme card styles intact; only the clock's own descendants are styled. */
 .card-clock {
+  --clock-foreground: var(--font-color, var(--efu-fontcolor, #202020));
+  --clock-face-background: transparent;
+  --clock-number-font: UnidreamLED, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  min-width: 0;
   padding: 0 !important;
+  overflow: hidden;
+  color: var(--clock-foreground);
+  container: electric-clock / inline-size;
 }
-.card-background {
-  height: 153px;
-  margin: 15px;
+
+.card-clock .card-glass,
+.card-clock .card-content,
+#aside-content .card-clock .card-content {
+  min-width: 0;
+}
+
+/* Solitude also uses .card-content for fixed-height content cards. */
+.card-clock .card-content,
+#aside-content .card-clock .card-content {
+  display: block;
+  position: static;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.card-clock .card-background {
+  min-width: 0;
+  min-height: 142px;
+  margin: 12px;
   border-radius: 8px;
-  box-shadow: inset 0px 0px 4px 2px rgb(145 148 154 / 40%);
-  z-index: 2;
+  background: var(--clock-face-background);
+  box-shadow: inset 0 0 4px 1px rgb(145 148 154 / 25%);
 }
-.clock-row {
-  font-family: UnidreamLED;
-  font-weight: 400;
-  color: #000;
+
+.card-clock #hexo_electric_clock {
+  box-sizing: border-box;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 142px;
+  padding: 14px 12px;
+}
+
+.card-clock .clock-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: inherit;
   flex-wrap: nowrap;
   white-space: nowrap;
 }
-.card-clock-clockdate,
-.card-clock-ip {
+
+.card-clock .card-clock-clockdate,
+.card-clock .card-clock-time,
+.card-clock .card-clock-dackorlight {
+  font-family: var(--clock-number-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-clock .card-clock-clockdate {
+  flex: 0 0 auto;
+  font-size: 10px;
   text-align: left;
 }
-.card-clock-location,
-.card-clock-weather {
+
+.card-clock .card-clock-weather,
+.card-clock .card-clock-windDir,
+.card-clock .card-clock-location {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-clock .card-clock-weather,
+.card-clock .card-clock-location {
   text-align: center;
 }
-.card-clock-dackorlight,
-.card-clock-humidity {
+
+.card-clock .card-clock-dackorlight,
+.card-clock .card-clock-humidity {
+  flex: 0 0 auto;
   text-align: right;
 }
-.card-clock-time {
-  flex: 1;
-  font-family: UnidreamLED;
+
+.card-clock .card-clock-humidity {
+  font-size: 10px;
+}
+
+.card-clock .card-clock-time {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 38px;
+  font-size: clamp(30px, 13cqi, 40px);
+  letter-spacing: 0;
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.65;
 }
-[data-theme='dark'] .card-background {
-  background-color: #212121;
+
+.card-clock .card-clock-windDir {
+  text-align: left;
 }
-[data-theme='dark'] .clock-row {
-  color: #fff;
+
+.card-clock .card-clock-windDir,
+.card-clock .card-clock-location {
+  font-size: 12px;
 }
-@media screen and (min-width: 900px){
-  .card-clock-humidity {
-     display: block;
-  }
+
+[data-theme='dark'] .card-clock {
+  --clock-foreground: var(--font-color, var(--efu-fontcolor, #eeeeee));
+  --clock-face-background: rgb(0 0 0 / 12%);
 }
-@media screen and (max-width: 1086px){
-  .card-clock-humidity {
+
+@container electric-clock (max-width: 260px) {
+  .card-clock .card-clock-humidity {
     display: none;
   }
 }
@@ -81,10 +141,10 @@ span.temp {
 * License:  Code for MIT, Icons for CC BY 4.0
 */
 
-[class^="qi-"]::before,
-[class*=" qi-"]::before {
+.card-clock [class^="qi-"]::before,
+.card-clock [class*=" qi-"]::before {
   display: inline-block;
-  font-family: "qweather-icons" !important;
+  font-family: "HexoElectricClockWeather" !important;
   font-style: normal;
   font-weight: normal !important;
   font-variant: normal;
@@ -95,469 +155,469 @@ span.temp {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.qi-100::before { content: "\f101"; }
-.qi-101::before { content: "\f102"; }
-.qi-102::before { content: "\f103"; }
-.qi-103::before { content: "\f104"; }
-.qi-104::before { content: "\f105"; }
-.qi-150::before { content: "\f106"; }
-.qi-151::before { content: "\f107"; }
-.qi-152::before { content: "\f108"; }
-.qi-153::before { content: "\f109"; }
-.qi-300::before { content: "\f10a"; }
-.qi-301::before { content: "\f10b"; }
-.qi-302::before { content: "\f10c"; }
-.qi-303::before { content: "\f10d"; }
-.qi-304::before { content: "\f10e"; }
-.qi-305::before { content: "\f10f"; }
-.qi-306::before { content: "\f110"; }
-.qi-307::before { content: "\f111"; }
-.qi-308::before { content: "\f112"; }
-.qi-309::before { content: "\f113"; }
-.qi-310::before { content: "\f114"; }
-.qi-311::before { content: "\f115"; }
-.qi-312::before { content: "\f116"; }
-.qi-313::before { content: "\f117"; }
-.qi-314::before { content: "\f118"; }
-.qi-315::before { content: "\f119"; }
-.qi-316::before { content: "\f11a"; }
-.qi-317::before { content: "\f11b"; }
-.qi-318::before { content: "\f11c"; }
-.qi-350::before { content: "\f11d"; }
-.qi-351::before { content: "\f11e"; }
-.qi-399::before { content: "\f11f"; }
-.qi-400::before { content: "\f120"; }
-.qi-401::before { content: "\f121"; }
-.qi-402::before { content: "\f122"; }
-.qi-403::before { content: "\f123"; }
-.qi-404::before { content: "\f124"; }
-.qi-405::before { content: "\f125"; }
-.qi-406::before { content: "\f126"; }
-.qi-407::before { content: "\f127"; }
-.qi-408::before { content: "\f128"; }
-.qi-409::before { content: "\f129"; }
-.qi-410::before { content: "\f12a"; }
-.qi-456::before { content: "\f12b"; }
-.qi-457::before { content: "\f12c"; }
-.qi-499::before { content: "\f12d"; }
-.qi-500::before { content: "\f12e"; }
-.qi-501::before { content: "\f12f"; }
-.qi-502::before { content: "\f130"; }
-.qi-503::before { content: "\f131"; }
-.qi-504::before { content: "\f132"; }
-.qi-507::before { content: "\f133"; }
-.qi-508::before { content: "\f134"; }
-.qi-509::before { content: "\f135"; }
-.qi-510::before { content: "\f136"; }
-.qi-511::before { content: "\f137"; }
-.qi-512::before { content: "\f138"; }
-.qi-513::before { content: "\f139"; }
-.qi-514::before { content: "\f13a"; }
-.qi-515::before { content: "\f13b"; }
-.qi-800::before { content: "\f13c"; }
-.qi-801::before { content: "\f13d"; }
-.qi-802::before { content: "\f13e"; }
-.qi-803::before { content: "\f13f"; }
-.qi-804::before { content: "\f140"; }
-.qi-805::before { content: "\f141"; }
-.qi-806::before { content: "\f142"; }
-.qi-807::before { content: "\f143"; }
-.qi-900::before { content: "\f144"; }
-.qi-901::before { content: "\f145"; }
-.qi-999::before { content: "\f146"; }
-.qi-1001::before { content: "\f147"; }
-.qi-1002::before { content: "\f148"; }
-.qi-1003::before { content: "\f149"; }
-.qi-1004::before { content: "\f14a"; }
-.qi-1005::before { content: "\f14b"; }
-.qi-1006::before { content: "\f14c"; }
-.qi-1007::before { content: "\f14d"; }
-.qi-1008::before { content: "\f14e"; }
-.qi-1009::before { content: "\f14f"; }
-.qi-1010::before { content: "\f150"; }
-.qi-1011::before { content: "\f151"; }
-.qi-1012::before { content: "\f152"; }
-.qi-1013::before { content: "\f153"; }
-.qi-1014::before { content: "\f154"; }
-.qi-1015::before { content: "\f155"; }
-.qi-1016::before { content: "\f156"; }
-.qi-1017::before { content: "\f157"; }
-.qi-1018::before { content: "\f158"; }
-.qi-1019::before { content: "\f159"; }
-.qi-1020::before { content: "\f15a"; }
-.qi-1021::before { content: "\f15b"; }
-.qi-1022::before { content: "\f15c"; }
-.qi-1023::before { content: "\f15d"; }
-.qi-1024::before { content: "\f15e"; }
-.qi-1025::before { content: "\f15f"; }
-.qi-1026::before { content: "\f160"; }
-.qi-1027::before { content: "\f161"; }
-.qi-1028::before { content: "\f162"; }
-.qi-1029::before { content: "\f163"; }
-.qi-1030::before { content: "\f164"; }
-.qi-1031::before { content: "\f165"; }
-.qi-1032::before { content: "\f166"; }
-.qi-1033::before { content: "\f167"; }
-.qi-1034::before { content: "\f168"; }
-.qi-1035::before { content: "\f169"; }
-.qi-1036::before { content: "\f16a"; }
-.qi-1037::before { content: "\f16b"; }
-.qi-1038::before { content: "\f16c"; }
-.qi-1039::before { content: "\f16d"; }
-.qi-1040::before { content: "\f16e"; }
-.qi-1041::before { content: "\f16f"; }
-.qi-1042::before { content: "\f170"; }
-.qi-1043::before { content: "\f171"; }
-.qi-1044::before { content: "\f172"; }
-.qi-1045::before { content: "\f173"; }
-.qi-1046::before { content: "\f174"; }
-.qi-1047::before { content: "\f175"; }
-.qi-1048::before { content: "\f176"; }
-.qi-1049::before { content: "\f177"; }
-.qi-1050::before { content: "\f178"; }
-.qi-1051::before { content: "\f179"; }
-.qi-1052::before { content: "\f17a"; }
-.qi-1053::before { content: "\f17b"; }
-.qi-1054::before { content: "\f17c"; }
-.qi-1055::before { content: "\f17d"; }
-.qi-1056::before { content: "\f17e"; }
-.qi-1057::before { content: "\f17f"; }
-.qi-1058::before { content: "\f180"; }
-.qi-1059::before { content: "\f181"; }
-.qi-1061::before { content: "\f182"; }
-.qi-1064::before { content: "\f183"; }
-.qi-1101::before { content: "\f184"; }
-.qi-1302::before { content: "\f185"; }
-.qi-1402::before { content: "\f186"; }
-.qi-1601::before { content: "\f187"; }
-.qi-1602::before { content: "\f188"; }
-.qi-1603::before { content: "\f189"; }
-.qi-1604::before { content: "\f18a"; }
-.qi-1605::before { content: "\f18b"; }
-.qi-1606::before { content: "\f18c"; }
-.qi-1607::before { content: "\f18d"; }
-.qi-2001::before { content: "\f18e"; }
-.qi-2002::before { content: "\f18f"; }
-.qi-2003::before { content: "\f190"; }
-.qi-2004::before { content: "\f191"; }
-.qi-2005::before { content: "\f192"; }
-.qi-2006::before { content: "\f193"; }
-.qi-2007::before { content: "\f194"; }
-.qi-2008::before { content: "\f195"; }
-.qi-2009::before { content: "\f196"; }
-.qi-2010::before { content: "\f197"; }
-.qi-2011::before { content: "\f198"; }
-.qi-2012::before { content: "\f199"; }
-.qi-2013::before { content: "\f19a"; }
-.qi-2014::before { content: "\f19b"; }
-.qi-2015::before { content: "\f19c"; }
-.qi-2016::before { content: "\f19d"; }
-.qi-2017::before { content: "\f19e"; }
-.qi-2018::before { content: "\f19f"; }
-.qi-2019::before { content: "\f1a0"; }
-.qi-2020::before { content: "\f1a1"; }
-.qi-2021::before { content: "\f1a2"; }
-.qi-2022::before { content: "\f1a3"; }
-.qi-2023::before { content: "\f1a4"; }
-.qi-2024::before { content: "\f1a5"; }
-.qi-2025::before { content: "\f1a6"; }
-.qi-2026::before { content: "\f1a7"; }
-.qi-2027::before { content: "\f1a8"; }
-.qi-2028::before { content: "\f1a9"; }
-.qi-9998::before { content: "\f1aa"; }
-.qi-9999::before { content: "\f1ab"; }
-.qi-100-fill::before { content: "\f1ac"; }
-.qi-101-fill::before { content: "\f1ad"; }
-.qi-102-fill::before { content: "\f1ae"; }
-.qi-103-fill::before { content: "\f1af"; }
-.qi-104-fill::before { content: "\f1b0"; }
-.qi-150-fill::before { content: "\f1b1"; }
-.qi-151-fill::before { content: "\f1b2"; }
-.qi-152-fill::before { content: "\f1b3"; }
-.qi-153-fill::before { content: "\f1b4"; }
-.qi-300-fill::before { content: "\f1b5"; }
-.qi-301-fill::before { content: "\f1b6"; }
-.qi-302-fill::before { content: "\f1b7"; }
-.qi-303-fill::before { content: "\f1b8"; }
-.qi-304-fill::before { content: "\f1b9"; }
-.qi-305-fill::before { content: "\f1ba"; }
-.qi-306-fill::before { content: "\f1bb"; }
-.qi-307-fill::before { content: "\f1bc"; }
-.qi-308-fill::before { content: "\f1bd"; }
-.qi-309-fill::before { content: "\f1be"; }
-.qi-310-fill::before { content: "\f1bf"; }
-.qi-311-fill::before { content: "\f1c0"; }
-.qi-312-fill::before { content: "\f1c1"; }
-.qi-313-fill::before { content: "\f1c2"; }
-.qi-314-fill::before { content: "\f1c3"; }
-.qi-315-fill::before { content: "\f1c4"; }
-.qi-316-fill::before { content: "\f1c5"; }
-.qi-317-fill::before { content: "\f1c6"; }
-.qi-318-fill::before { content: "\f1c7"; }
-.qi-350-fill::before { content: "\f1c8"; }
-.qi-351-fill::before { content: "\f1c9"; }
-.qi-399-fill::before { content: "\f1ca"; }
-.qi-400-fill::before { content: "\f1cb"; }
-.qi-401-fill::before { content: "\f1cc"; }
-.qi-402-fill::before { content: "\f1cd"; }
-.qi-403-fill::before { content: "\f1ce"; }
-.qi-404-fill::before { content: "\f1cf"; }
-.qi-405-fill::before { content: "\f1d0"; }
-.qi-406-fill::before { content: "\f1d1"; }
-.qi-407-fill::before { content: "\f1d2"; }
-.qi-408-fill::before { content: "\f1d3"; }
-.qi-409-fill::before { content: "\f1d4"; }
-.qi-410-fill::before { content: "\f1d5"; }
-.qi-456-fill::before { content: "\f1d6"; }
-.qi-457-fill::before { content: "\f1d7"; }
-.qi-499-fill::before { content: "\f1d8"; }
-.qi-500-fill::before { content: "\f1d9"; }
-.qi-501-fill::before { content: "\f1da"; }
-.qi-502-fill::before { content: "\f1db"; }
-.qi-503-fill::before { content: "\f1dc"; }
-.qi-504-fill::before { content: "\f1dd"; }
-.qi-507-fill::before { content: "\f1de"; }
-.qi-508-fill::before { content: "\f1df"; }
-.qi-509-fill::before { content: "\f1e0"; }
-.qi-510-fill::before { content: "\f1e1"; }
-.qi-511-fill::before { content: "\f1e2"; }
-.qi-512-fill::before { content: "\f1e3"; }
-.qi-513-fill::before { content: "\f1e4"; }
-.qi-514-fill::before { content: "\f1e5"; }
-.qi-515-fill::before { content: "\f1e6"; }
-.qi-900-fill::before { content: "\f1e7"; }
-.qi-901-fill::before { content: "\f1e8"; }
-.qi-999-fill::before { content: "\f1e9"; }
-.qi-sunny::before { content: "\f101"; }
-.qi-cloudy::before { content: "\f102"; }
-.qi-few-clouds::before { content: "\f103"; }
-.qi-partly-cloudy::before { content: "\f104"; }
-.qi-overcast::before { content: "\f105"; }
-.qi-clear-night::before { content: "\f106"; }
-.qi-cloudy-night::before { content: "\f107"; }
-.qi-few-clouds-night::before { content: "\f108"; }
-.qi-partly-cloudy-night::before { content: "\f109"; }
-.qi-shower-rain::before { content: "\f10a"; }
-.qi-heavy-shower-rain::before { content: "\f10b"; }
-.qi-thundershower::before { content: "\f10c"; }
-.qi-heavy-thunderstorm::before { content: "\f10d"; }
-.qi-thundershower-with-hail::before { content: "\f10e"; }
-.qi-light-rain::before { content: "\f10f"; }
-.qi-moderate-rain::before { content: "\f110"; }
-.qi-heavy-rain::before { content: "\f111"; }
-.qi-extreme-rain::before { content: "\f112"; }
-.qi-drizzle-rain::before { content: "\f113"; }
-.qi-storm::before { content: "\f114"; }
-.qi-heavy-storm::before { content: "\f115"; }
-.qi-severe-storm::before { content: "\f116"; }
-.qi-freezing-rain::before { content: "\f117"; }
-.qi-light-to-moderate-rain::before { content: "\f118"; }
-.qi-moderate-to-heavy-rain::before { content: "\f119"; }
-.qi-heavy-rain-to-storm::before { content: "\f11a"; }
-.qi-storm-to-heavy-storm::before { content: "\f11b"; }
-.qi-heavy-to-severe-storm::before { content: "\f11c"; }
-.qi-shower-rain-night::before { content: "\f11d"; }
-.qi-heavy-shower-rain-night::before { content: "\f11e"; }
-.qi-rain::before { content: "\f11f"; }
-.qi-light-snow::before { content: "\f120"; }
-.qi-moderate-snow::before { content: "\f121"; }
-.qi-heavy-snow::before { content: "\f122"; }
-.qi-snowstorm::before { content: "\f123"; }
-.qi-sleet::before { content: "\f124"; }
-.qi-rain-and-snow::before { content: "\f125"; }
-.qi-shower-snow::before { content: "\f126"; }
-.qi-snow-flurry::before { content: "\f127"; }
-.qi-light-to-moderate-snow::before { content: "\f128"; }
-.qi-moderate-to-heavy-snow::before { content: "\f129"; }
-.qi-heavy-snow-to-snowstorm::before { content: "\f12a"; }
-.qi-shower-snow-night::before { content: "\f12b"; }
-.qi-snow-flurry-night::before { content: "\f12c"; }
-.qi-snow::before { content: "\f12d"; }
-.qi-mist::before { content: "\f12e"; }
-.qi-foggy::before { content: "\f12f"; }
-.qi-haze::before { content: "\f130"; }
-.qi-sand::before { content: "\f131"; }
-.qi-dust::before { content: "\f132"; }
-.qi-duststorm::before { content: "\f133"; }
-.qi-sandstorm::before { content: "\f134"; }
-.qi-dense-fog::before { content: "\f135"; }
-.qi-strong-fog::before { content: "\f136"; }
-.qi-moderate-haze::before { content: "\f137"; }
-.qi-heavy-haze::before { content: "\f138"; }
-.qi-severe-haze::before { content: "\f139"; }
-.qi-heavy-fog::before { content: "\f13a"; }
-.qi-extra-heavy-fog::before { content: "\f13b"; }
-.qi-new-moon::before { content: "\f13c"; }
-.qi-waxing-crescent::before { content: "\f13d"; }
-.qi-first-quarter::before { content: "\f13e"; }
-.qi-waxing-gibbous::before { content: "\f13f"; }
-.qi-full-moon::before { content: "\f140"; }
-.qi-waning-gibbous::before { content: "\f141"; }
-.qi-last-quarter::before { content: "\f142"; }
-.qi-waning-crescent::before { content: "\f143"; }
-.qi-hot::before { content: "\f144"; }
-.qi-cold::before { content: "\f145"; }
-.qi-unknown::before { content: "\f146"; }
-.qi-typhoon::before { content: "\f147"; }
-.qi-tornado::before { content: "\f148"; }
-.qi-rainstorm::before { content: "\f149"; }
-.qi-snow-storm::before { content: "\f14a"; }
-.qi-cold-wave::before { content: "\f14b"; }
-.qi-gale::before { content: "\f14c"; }
-.qi-sandstorm-warning::before { content: "\f14d"; }
-.qi-low-temperature-freeze::before { content: "\f14e"; }
-.qi-high-temperature::before { content: "\f14f"; }
-.qi-heat-wave::before { content: "\f150"; }
-.qi-dry-hot-air::before { content: "\f151"; }
-.qi-downburst::before { content: "\f152"; }
-.qi-avalanche::before { content: "\f153"; }
-.qi-lightning::before { content: "\f154"; }
-.qi-hail::before { content: "\f155"; }
-.qi-frost::before { content: "\f156"; }
-.qi-heavy-fog-warning::before { content: "\f157"; }
-.qi-low-level-wind-shearl::before { content: "\f158"; }
-.qi-haze-warning::before { content: "\f159"; }
-.qi-thunder-gust::before { content: "\f15a"; }
-.qi-road-icing::before { content: "\f15b"; }
-.qi-drought::before { content: "\f15c"; }
-.qi-gale-at-sea::before { content: "\f15d"; }
-.qi-heat-stroke::before { content: "\f15e"; }
-.qi-wildfire::before { content: "\f15f"; }
-.qi-grassland-fire::before { content: "\f160"; }
-.qi-freeze::before { content: "\f161"; }
-.qi-space-weather::before { content: "\f162"; }
-.qi-heavy-air-pollution::before { content: "\f163"; }
-.qi-low-temperature-rain-and-snow::before { content: "\f164"; }
-.qi-strong-convection::before { content: "\f165"; }
-.qi-ozone::before { content: "\f166"; }
-.qi-heavy-snow-warning::before { content: "\f167"; }
-.qi-cold-warning::before { content: "\f168"; }
-.qi-continuous-rain::before { content: "\f169"; }
-.qi-waterlogging::before { content: "\f16a"; }
-.qi-geological-hazard::before { content: "\f16b"; }
-.qi-heavy-rainfall::before { content: "\f16c"; }
-.qi-severely-falling-temperature::before { content: "\f16d"; }
-.qi-snow-disaster::before { content: "\f16e"; }
-.qi-wildfire-grassland::before { content: "\f16f"; }
-.qi-medical-meteorology::before { content: "\f170"; }
-.qi-thunderstorm::before { content: "\f171"; }
-.qi-school-closure::before { content: "\f172"; }
-.qi-factory-closure::before { content: "\f173"; }
-.qi-maritime-risk::before { content: "\f174"; }
-.qi-spring-dust::before { content: "\f175"; }
-.qi-falling-temperature::before { content: "\f176"; }
-.qi-typhoon-and-rainstorm::before { content: "\f177"; }
-.qi-severe-cold::before { content: "\f178"; }
-.qi-sand-dust::before { content: "\f179"; }
-.qi-sea-thunderstorms::before { content: "\f17a"; }
-.qi-sea-fog::before { content: "\f17b"; }
-.qi-sea-thunder::before { content: "\f17c"; }
-.qi-sea-typhoon::before { content: "\f17d"; }
-.qi-low-temperature::before { content: "\f17e"; }
-.qi-road-ice-and-snow::before { content: "\f17f"; }
-.qi-thunderstorm-and-gale::before { content: "\f180"; }
-.qi-continuous-low-temperature::before { content: "\f181"; }
-.qi-strong-dust::before { content: "\f182"; }
-.qi-short-lived-heavy-shower-rain::before { content: "\f183"; }
-.qi-flood::before { content: "\f184"; }
-.qi-mudflow::before { content: "\f185"; }
-.qi-storm-surge::before { content: "\f186"; }
-.qi-very-hot-weather::before { content: "\f187"; }
-.qi-strong-monsoon-signal::before { content: "\f188"; }
-.qi-landslip::before { content: "\f189"; }
-.qi-tropical-cyclone::before { content: "\f18a"; }
-.qi-fire-danger::before { content: "\f18b"; }
-.qi-flooding-in-the-northern-new-territories::before { content: "\f18c"; }
-.qi-cold-weather::before { content: "\f18d"; }
-.qi-wind::before { content: "\f18e"; }
-.qi-snow-ice::before { content: "\f18f"; }
-.qi-fog::before { content: "\f190"; }
-.qi-coastal-event::before { content: "\f191"; }
-.qi-forest-fire::before { content: "\f192"; }
-.qi-rain-warning::before { content: "\f193"; }
-.qi-rain-flood::before { content: "\f194"; }
-.qi-freezing-rain-icing::before { content: "\f195"; }
-.qi-ground-frost::before { content: "\f196"; }
-.qi-dust-raising-winds::before { content: "\f197"; }
-.qi-strong-surface-winds::before { content: "\f198"; }
-.qi-hot-day::before { content: "\f199"; }
-.qi-warm-night::before { content: "\f19a"; }
-.qi-cold-day::before { content: "\f19b"; }
-.qi-thunderstorm-and-lightning::before { content: "\f19c"; }
-.qi-hailstorm::before { content: "\f19d"; }
-.qi-sea-area-warning::before { content: "\f19e"; }
-.qi-fishermen-warning::before { content: "\f19f"; }
-.qi-low-humidity::before { content: "\f1a0"; }
-.qi-accumulated-rain::before { content: "\f1a1"; }
-.qi-hazardous-surf-warning::before { content: "\f1a2"; }
-.qi-marine-wind-warning::before { content: "\f1a3"; }
-.qi-road-weather-alert::before { content: "\f1a4"; }
-.qi-thunder-rain::before { content: "\f1a5"; }
-.qi-thunder-rain-and-fog::before { content: "\f1a6"; }
-.qi-damaging-winds::before { content: "\f1a7"; }
-.qi-veld-fire-conditions::before { content: "\f1a8"; }
-.qi-weather-advisory::before { content: "\f1a9"; }
-.qi-severe-weather-warning::before { content: "\f1aa"; }
-.qi-warning-default::before { content: "\f1ab"; }
-.qi-sunny-fill::before { content: "\f1ac"; }
-.qi-cloudy-fill::before { content: "\f1ad"; }
-.qi-few-clouds-fill::before { content: "\f1ae"; }
-.qi-partly-cloudy-fill::before { content: "\f1af"; }
-.qi-overcast-fill::before { content: "\f1b0"; }
-.qi-clear-night-fill::before { content: "\f1b1"; }
-.qi-cloudy-night-fill::before { content: "\f1b2"; }
-.qi-few-clouds-night-fill::before { content: "\f1b3"; }
-.qi-partly-cloudy-night-fill::before { content: "\f1b4"; }
-.qi-shower-rain-fill::before { content: "\f1b5"; }
-.qi-heavy-shower-rain-fill::before { content: "\f1b6"; }
-.qi-thundershower-fill::before { content: "\f1b7"; }
-.qi-heavy-thunderstorm-fill::before { content: "\f1b8"; }
-.qi-thundershower-with-hail-fill::before { content: "\f1b9"; }
-.qi-light-rain-fill::before { content: "\f1ba"; }
-.qi-moderate-rain-fill::before { content: "\f1bb"; }
-.qi-heavy-rain-fill::before { content: "\f1bc"; }
-.qi-extreme-rain-fill::before { content: "\f1bd"; }
-.qi-drizzle-rain-fill::before { content: "\f1be"; }
-.qi-storm-fill::before { content: "\f1bf"; }
-.qi-heavy-storm-fill::before { content: "\f1c0"; }
-.qi-severe-storm-fill::before { content: "\f1c1"; }
-.qi-freezing-rain-fill::before { content: "\f1c2"; }
-.qi-light-to-moderate-rain-fill::before { content: "\f1c3"; }
-.qi-moderate-to-heavy-rain-fill::before { content: "\f1c4"; }
-.qi-heavy-rain-to-storm-fill::before { content: "\f1c5"; }
-.qi-storm-to-heavy-storm-fill::before { content: "\f1c6"; }
-.qi-heavy-to-severe-storm-fill::before { content: "\f1c7"; }
-.qi-shower-rain-night-fill::before { content: "\f1c8"; }
-.qi-heavy-shower-rain-night-fill::before { content: "\f1c9"; }
-.qi-rain-fill::before { content: "\f1ca"; }
-.qi-light-snow-fill::before { content: "\f1cb"; }
-.qi-moderate-snow-fill::before { content: "\f1cc"; }
-.qi-heavy-snow-fill::before { content: "\f1cd"; }
-.qi-snowstorm-fill::before { content: "\f1ce"; }
-.qi-sleet-fill::before { content: "\f1cf"; }
-.qi-rain-and-snow-fill::before { content: "\f1d0"; }
-.qi-shower-snow-fill::before { content: "\f1d1"; }
-.qi-snow-flurry-fill::before { content: "\f1d2"; }
-.qi-light-to-moderate-snow-fill::before { content: "\f1d3"; }
-.qi-moderate-to-heavy-snow-fill::before { content: "\f1d4"; }
-.qi-heavy-snow-to-snowstorm-fill::before { content: "\f1d5"; }
-.qi-shower-snow-night-fill::before { content: "\f1d6"; }
-.qi-snow-flurry-night-fill::before { content: "\f1d7"; }
-.qi-snow-fill::before { content: "\f1d8"; }
-.qi-mist-fill::before { content: "\f1d9"; }
-.qi-foggy-fill::before { content: "\f1da"; }
-.qi-haze-fill::before { content: "\f1db"; }
-.qi-sand-fill::before { content: "\f1dc"; }
-.qi-dust-fill::before { content: "\f1dd"; }
-.qi-duststorm-fill::before { content: "\f1de"; }
-.qi-sandstorm-fill::before { content: "\f1df"; }
-.qi-dense-fog-fill::before { content: "\f1e0"; }
-.qi-strong-fog-fill::before { content: "\f1e1"; }
-.qi-moderate-haze-fill::before { content: "\f1e2"; }
-.qi-heavy-haze-fill::before { content: "\f1e3"; }
-.qi-severe-haze-fill::before { content: "\f1e4"; }
-.qi-heavy-fog-fill::before { content: "\f1e5"; }
-.qi-extra-heavy-fog-fill::before { content: "\f1e6"; }
-.qi-hot-fill::before { content: "\f1e7"; }
-.qi-cold-fill::before { content: "\f1e8"; }
-.qi-unknown-fill::before { content: "\f1e9"; }
+.card-clock .qi-100::before { content: "\f101"; }
+.card-clock .qi-101::before { content: "\f102"; }
+.card-clock .qi-102::before { content: "\f103"; }
+.card-clock .qi-103::before { content: "\f104"; }
+.card-clock .qi-104::before { content: "\f105"; }
+.card-clock .qi-150::before { content: "\f106"; }
+.card-clock .qi-151::before { content: "\f107"; }
+.card-clock .qi-152::before { content: "\f108"; }
+.card-clock .qi-153::before { content: "\f109"; }
+.card-clock .qi-300::before { content: "\f10a"; }
+.card-clock .qi-301::before { content: "\f10b"; }
+.card-clock .qi-302::before { content: "\f10c"; }
+.card-clock .qi-303::before { content: "\f10d"; }
+.card-clock .qi-304::before { content: "\f10e"; }
+.card-clock .qi-305::before { content: "\f10f"; }
+.card-clock .qi-306::before { content: "\f110"; }
+.card-clock .qi-307::before { content: "\f111"; }
+.card-clock .qi-308::before { content: "\f112"; }
+.card-clock .qi-309::before { content: "\f113"; }
+.card-clock .qi-310::before { content: "\f114"; }
+.card-clock .qi-311::before { content: "\f115"; }
+.card-clock .qi-312::before { content: "\f116"; }
+.card-clock .qi-313::before { content: "\f117"; }
+.card-clock .qi-314::before { content: "\f118"; }
+.card-clock .qi-315::before { content: "\f119"; }
+.card-clock .qi-316::before { content: "\f11a"; }
+.card-clock .qi-317::before { content: "\f11b"; }
+.card-clock .qi-318::before { content: "\f11c"; }
+.card-clock .qi-350::before { content: "\f11d"; }
+.card-clock .qi-351::before { content: "\f11e"; }
+.card-clock .qi-399::before { content: "\f11f"; }
+.card-clock .qi-400::before { content: "\f120"; }
+.card-clock .qi-401::before { content: "\f121"; }
+.card-clock .qi-402::before { content: "\f122"; }
+.card-clock .qi-403::before { content: "\f123"; }
+.card-clock .qi-404::before { content: "\f124"; }
+.card-clock .qi-405::before { content: "\f125"; }
+.card-clock .qi-406::before { content: "\f126"; }
+.card-clock .qi-407::before { content: "\f127"; }
+.card-clock .qi-408::before { content: "\f128"; }
+.card-clock .qi-409::before { content: "\f129"; }
+.card-clock .qi-410::before { content: "\f12a"; }
+.card-clock .qi-456::before { content: "\f12b"; }
+.card-clock .qi-457::before { content: "\f12c"; }
+.card-clock .qi-499::before { content: "\f12d"; }
+.card-clock .qi-500::before { content: "\f12e"; }
+.card-clock .qi-501::before { content: "\f12f"; }
+.card-clock .qi-502::before { content: "\f130"; }
+.card-clock .qi-503::before { content: "\f131"; }
+.card-clock .qi-504::before { content: "\f132"; }
+.card-clock .qi-507::before { content: "\f133"; }
+.card-clock .qi-508::before { content: "\f134"; }
+.card-clock .qi-509::before { content: "\f135"; }
+.card-clock .qi-510::before { content: "\f136"; }
+.card-clock .qi-511::before { content: "\f137"; }
+.card-clock .qi-512::before { content: "\f138"; }
+.card-clock .qi-513::before { content: "\f139"; }
+.card-clock .qi-514::before { content: "\f13a"; }
+.card-clock .qi-515::before { content: "\f13b"; }
+.card-clock .qi-800::before { content: "\f13c"; }
+.card-clock .qi-801::before { content: "\f13d"; }
+.card-clock .qi-802::before { content: "\f13e"; }
+.card-clock .qi-803::before { content: "\f13f"; }
+.card-clock .qi-804::before { content: "\f140"; }
+.card-clock .qi-805::before { content: "\f141"; }
+.card-clock .qi-806::before { content: "\f142"; }
+.card-clock .qi-807::before { content: "\f143"; }
+.card-clock .qi-900::before { content: "\f144"; }
+.card-clock .qi-901::before { content: "\f145"; }
+.card-clock .qi-999::before { content: "\f146"; }
+.card-clock .qi-1001::before { content: "\f147"; }
+.card-clock .qi-1002::before { content: "\f148"; }
+.card-clock .qi-1003::before { content: "\f149"; }
+.card-clock .qi-1004::before { content: "\f14a"; }
+.card-clock .qi-1005::before { content: "\f14b"; }
+.card-clock .qi-1006::before { content: "\f14c"; }
+.card-clock .qi-1007::before { content: "\f14d"; }
+.card-clock .qi-1008::before { content: "\f14e"; }
+.card-clock .qi-1009::before { content: "\f14f"; }
+.card-clock .qi-1010::before { content: "\f150"; }
+.card-clock .qi-1011::before { content: "\f151"; }
+.card-clock .qi-1012::before { content: "\f152"; }
+.card-clock .qi-1013::before { content: "\f153"; }
+.card-clock .qi-1014::before { content: "\f154"; }
+.card-clock .qi-1015::before { content: "\f155"; }
+.card-clock .qi-1016::before { content: "\f156"; }
+.card-clock .qi-1017::before { content: "\f157"; }
+.card-clock .qi-1018::before { content: "\f158"; }
+.card-clock .qi-1019::before { content: "\f159"; }
+.card-clock .qi-1020::before { content: "\f15a"; }
+.card-clock .qi-1021::before { content: "\f15b"; }
+.card-clock .qi-1022::before { content: "\f15c"; }
+.card-clock .qi-1023::before { content: "\f15d"; }
+.card-clock .qi-1024::before { content: "\f15e"; }
+.card-clock .qi-1025::before { content: "\f15f"; }
+.card-clock .qi-1026::before { content: "\f160"; }
+.card-clock .qi-1027::before { content: "\f161"; }
+.card-clock .qi-1028::before { content: "\f162"; }
+.card-clock .qi-1029::before { content: "\f163"; }
+.card-clock .qi-1030::before { content: "\f164"; }
+.card-clock .qi-1031::before { content: "\f165"; }
+.card-clock .qi-1032::before { content: "\f166"; }
+.card-clock .qi-1033::before { content: "\f167"; }
+.card-clock .qi-1034::before { content: "\f168"; }
+.card-clock .qi-1035::before { content: "\f169"; }
+.card-clock .qi-1036::before { content: "\f16a"; }
+.card-clock .qi-1037::before { content: "\f16b"; }
+.card-clock .qi-1038::before { content: "\f16c"; }
+.card-clock .qi-1039::before { content: "\f16d"; }
+.card-clock .qi-1040::before { content: "\f16e"; }
+.card-clock .qi-1041::before { content: "\f16f"; }
+.card-clock .qi-1042::before { content: "\f170"; }
+.card-clock .qi-1043::before { content: "\f171"; }
+.card-clock .qi-1044::before { content: "\f172"; }
+.card-clock .qi-1045::before { content: "\f173"; }
+.card-clock .qi-1046::before { content: "\f174"; }
+.card-clock .qi-1047::before { content: "\f175"; }
+.card-clock .qi-1048::before { content: "\f176"; }
+.card-clock .qi-1049::before { content: "\f177"; }
+.card-clock .qi-1050::before { content: "\f178"; }
+.card-clock .qi-1051::before { content: "\f179"; }
+.card-clock .qi-1052::before { content: "\f17a"; }
+.card-clock .qi-1053::before { content: "\f17b"; }
+.card-clock .qi-1054::before { content: "\f17c"; }
+.card-clock .qi-1055::before { content: "\f17d"; }
+.card-clock .qi-1056::before { content: "\f17e"; }
+.card-clock .qi-1057::before { content: "\f17f"; }
+.card-clock .qi-1058::before { content: "\f180"; }
+.card-clock .qi-1059::before { content: "\f181"; }
+.card-clock .qi-1061::before { content: "\f182"; }
+.card-clock .qi-1064::before { content: "\f183"; }
+.card-clock .qi-1101::before { content: "\f184"; }
+.card-clock .qi-1302::before { content: "\f185"; }
+.card-clock .qi-1402::before { content: "\f186"; }
+.card-clock .qi-1601::before { content: "\f187"; }
+.card-clock .qi-1602::before { content: "\f188"; }
+.card-clock .qi-1603::before { content: "\f189"; }
+.card-clock .qi-1604::before { content: "\f18a"; }
+.card-clock .qi-1605::before { content: "\f18b"; }
+.card-clock .qi-1606::before { content: "\f18c"; }
+.card-clock .qi-1607::before { content: "\f18d"; }
+.card-clock .qi-2001::before { content: "\f18e"; }
+.card-clock .qi-2002::before { content: "\f18f"; }
+.card-clock .qi-2003::before { content: "\f190"; }
+.card-clock .qi-2004::before { content: "\f191"; }
+.card-clock .qi-2005::before { content: "\f192"; }
+.card-clock .qi-2006::before { content: "\f193"; }
+.card-clock .qi-2007::before { content: "\f194"; }
+.card-clock .qi-2008::before { content: "\f195"; }
+.card-clock .qi-2009::before { content: "\f196"; }
+.card-clock .qi-2010::before { content: "\f197"; }
+.card-clock .qi-2011::before { content: "\f198"; }
+.card-clock .qi-2012::before { content: "\f199"; }
+.card-clock .qi-2013::before { content: "\f19a"; }
+.card-clock .qi-2014::before { content: "\f19b"; }
+.card-clock .qi-2015::before { content: "\f19c"; }
+.card-clock .qi-2016::before { content: "\f19d"; }
+.card-clock .qi-2017::before { content: "\f19e"; }
+.card-clock .qi-2018::before { content: "\f19f"; }
+.card-clock .qi-2019::before { content: "\f1a0"; }
+.card-clock .qi-2020::before { content: "\f1a1"; }
+.card-clock .qi-2021::before { content: "\f1a2"; }
+.card-clock .qi-2022::before { content: "\f1a3"; }
+.card-clock .qi-2023::before { content: "\f1a4"; }
+.card-clock .qi-2024::before { content: "\f1a5"; }
+.card-clock .qi-2025::before { content: "\f1a6"; }
+.card-clock .qi-2026::before { content: "\f1a7"; }
+.card-clock .qi-2027::before { content: "\f1a8"; }
+.card-clock .qi-2028::before { content: "\f1a9"; }
+.card-clock .qi-9998::before { content: "\f1aa"; }
+.card-clock .qi-9999::before { content: "\f1ab"; }
+.card-clock .qi-100-fill::before { content: "\f1ac"; }
+.card-clock .qi-101-fill::before { content: "\f1ad"; }
+.card-clock .qi-102-fill::before { content: "\f1ae"; }
+.card-clock .qi-103-fill::before { content: "\f1af"; }
+.card-clock .qi-104-fill::before { content: "\f1b0"; }
+.card-clock .qi-150-fill::before { content: "\f1b1"; }
+.card-clock .qi-151-fill::before { content: "\f1b2"; }
+.card-clock .qi-152-fill::before { content: "\f1b3"; }
+.card-clock .qi-153-fill::before { content: "\f1b4"; }
+.card-clock .qi-300-fill::before { content: "\f1b5"; }
+.card-clock .qi-301-fill::before { content: "\f1b6"; }
+.card-clock .qi-302-fill::before { content: "\f1b7"; }
+.card-clock .qi-303-fill::before { content: "\f1b8"; }
+.card-clock .qi-304-fill::before { content: "\f1b9"; }
+.card-clock .qi-305-fill::before { content: "\f1ba"; }
+.card-clock .qi-306-fill::before { content: "\f1bb"; }
+.card-clock .qi-307-fill::before { content: "\f1bc"; }
+.card-clock .qi-308-fill::before { content: "\f1bd"; }
+.card-clock .qi-309-fill::before { content: "\f1be"; }
+.card-clock .qi-310-fill::before { content: "\f1bf"; }
+.card-clock .qi-311-fill::before { content: "\f1c0"; }
+.card-clock .qi-312-fill::before { content: "\f1c1"; }
+.card-clock .qi-313-fill::before { content: "\f1c2"; }
+.card-clock .qi-314-fill::before { content: "\f1c3"; }
+.card-clock .qi-315-fill::before { content: "\f1c4"; }
+.card-clock .qi-316-fill::before { content: "\f1c5"; }
+.card-clock .qi-317-fill::before { content: "\f1c6"; }
+.card-clock .qi-318-fill::before { content: "\f1c7"; }
+.card-clock .qi-350-fill::before { content: "\f1c8"; }
+.card-clock .qi-351-fill::before { content: "\f1c9"; }
+.card-clock .qi-399-fill::before { content: "\f1ca"; }
+.card-clock .qi-400-fill::before { content: "\f1cb"; }
+.card-clock .qi-401-fill::before { content: "\f1cc"; }
+.card-clock .qi-402-fill::before { content: "\f1cd"; }
+.card-clock .qi-403-fill::before { content: "\f1ce"; }
+.card-clock .qi-404-fill::before { content: "\f1cf"; }
+.card-clock .qi-405-fill::before { content: "\f1d0"; }
+.card-clock .qi-406-fill::before { content: "\f1d1"; }
+.card-clock .qi-407-fill::before { content: "\f1d2"; }
+.card-clock .qi-408-fill::before { content: "\f1d3"; }
+.card-clock .qi-409-fill::before { content: "\f1d4"; }
+.card-clock .qi-410-fill::before { content: "\f1d5"; }
+.card-clock .qi-456-fill::before { content: "\f1d6"; }
+.card-clock .qi-457-fill::before { content: "\f1d7"; }
+.card-clock .qi-499-fill::before { content: "\f1d8"; }
+.card-clock .qi-500-fill::before { content: "\f1d9"; }
+.card-clock .qi-501-fill::before { content: "\f1da"; }
+.card-clock .qi-502-fill::before { content: "\f1db"; }
+.card-clock .qi-503-fill::before { content: "\f1dc"; }
+.card-clock .qi-504-fill::before { content: "\f1dd"; }
+.card-clock .qi-507-fill::before { content: "\f1de"; }
+.card-clock .qi-508-fill::before { content: "\f1df"; }
+.card-clock .qi-509-fill::before { content: "\f1e0"; }
+.card-clock .qi-510-fill::before { content: "\f1e1"; }
+.card-clock .qi-511-fill::before { content: "\f1e2"; }
+.card-clock .qi-512-fill::before { content: "\f1e3"; }
+.card-clock .qi-513-fill::before { content: "\f1e4"; }
+.card-clock .qi-514-fill::before { content: "\f1e5"; }
+.card-clock .qi-515-fill::before { content: "\f1e6"; }
+.card-clock .qi-900-fill::before { content: "\f1e7"; }
+.card-clock .qi-901-fill::before { content: "\f1e8"; }
+.card-clock .qi-999-fill::before { content: "\f1e9"; }
+.card-clock .qi-sunny::before { content: "\f101"; }
+.card-clock .qi-cloudy::before { content: "\f102"; }
+.card-clock .qi-few-clouds::before { content: "\f103"; }
+.card-clock .qi-partly-cloudy::before { content: "\f104"; }
+.card-clock .qi-overcast::before { content: "\f105"; }
+.card-clock .qi-clear-night::before { content: "\f106"; }
+.card-clock .qi-cloudy-night::before { content: "\f107"; }
+.card-clock .qi-few-clouds-night::before { content: "\f108"; }
+.card-clock .qi-partly-cloudy-night::before { content: "\f109"; }
+.card-clock .qi-shower-rain::before { content: "\f10a"; }
+.card-clock .qi-heavy-shower-rain::before { content: "\f10b"; }
+.card-clock .qi-thundershower::before { content: "\f10c"; }
+.card-clock .qi-heavy-thunderstorm::before { content: "\f10d"; }
+.card-clock .qi-thundershower-with-hail::before { content: "\f10e"; }
+.card-clock .qi-light-rain::before { content: "\f10f"; }
+.card-clock .qi-moderate-rain::before { content: "\f110"; }
+.card-clock .qi-heavy-rain::before { content: "\f111"; }
+.card-clock .qi-extreme-rain::before { content: "\f112"; }
+.card-clock .qi-drizzle-rain::before { content: "\f113"; }
+.card-clock .qi-storm::before { content: "\f114"; }
+.card-clock .qi-heavy-storm::before { content: "\f115"; }
+.card-clock .qi-severe-storm::before { content: "\f116"; }
+.card-clock .qi-freezing-rain::before { content: "\f117"; }
+.card-clock .qi-light-to-moderate-rain::before { content: "\f118"; }
+.card-clock .qi-moderate-to-heavy-rain::before { content: "\f119"; }
+.card-clock .qi-heavy-rain-to-storm::before { content: "\f11a"; }
+.card-clock .qi-storm-to-heavy-storm::before { content: "\f11b"; }
+.card-clock .qi-heavy-to-severe-storm::before { content: "\f11c"; }
+.card-clock .qi-shower-rain-night::before { content: "\f11d"; }
+.card-clock .qi-heavy-shower-rain-night::before { content: "\f11e"; }
+.card-clock .qi-rain::before { content: "\f11f"; }
+.card-clock .qi-light-snow::before { content: "\f120"; }
+.card-clock .qi-moderate-snow::before { content: "\f121"; }
+.card-clock .qi-heavy-snow::before { content: "\f122"; }
+.card-clock .qi-snowstorm::before { content: "\f123"; }
+.card-clock .qi-sleet::before { content: "\f124"; }
+.card-clock .qi-rain-and-snow::before { content: "\f125"; }
+.card-clock .qi-shower-snow::before { content: "\f126"; }
+.card-clock .qi-snow-flurry::before { content: "\f127"; }
+.card-clock .qi-light-to-moderate-snow::before { content: "\f128"; }
+.card-clock .qi-moderate-to-heavy-snow::before { content: "\f129"; }
+.card-clock .qi-heavy-snow-to-snowstorm::before { content: "\f12a"; }
+.card-clock .qi-shower-snow-night::before { content: "\f12b"; }
+.card-clock .qi-snow-flurry-night::before { content: "\f12c"; }
+.card-clock .qi-snow::before { content: "\f12d"; }
+.card-clock .qi-mist::before { content: "\f12e"; }
+.card-clock .qi-foggy::before { content: "\f12f"; }
+.card-clock .qi-haze::before { content: "\f130"; }
+.card-clock .qi-sand::before { content: "\f131"; }
+.card-clock .qi-dust::before { content: "\f132"; }
+.card-clock .qi-duststorm::before { content: "\f133"; }
+.card-clock .qi-sandstorm::before { content: "\f134"; }
+.card-clock .qi-dense-fog::before { content: "\f135"; }
+.card-clock .qi-strong-fog::before { content: "\f136"; }
+.card-clock .qi-moderate-haze::before { content: "\f137"; }
+.card-clock .qi-heavy-haze::before { content: "\f138"; }
+.card-clock .qi-severe-haze::before { content: "\f139"; }
+.card-clock .qi-heavy-fog::before { content: "\f13a"; }
+.card-clock .qi-extra-heavy-fog::before { content: "\f13b"; }
+.card-clock .qi-new-moon::before { content: "\f13c"; }
+.card-clock .qi-waxing-crescent::before { content: "\f13d"; }
+.card-clock .qi-first-quarter::before { content: "\f13e"; }
+.card-clock .qi-waxing-gibbous::before { content: "\f13f"; }
+.card-clock .qi-full-moon::before { content: "\f140"; }
+.card-clock .qi-waning-gibbous::before { content: "\f141"; }
+.card-clock .qi-last-quarter::before { content: "\f142"; }
+.card-clock .qi-waning-crescent::before { content: "\f143"; }
+.card-clock .qi-hot::before { content: "\f144"; }
+.card-clock .qi-cold::before { content: "\f145"; }
+.card-clock .qi-unknown::before { content: "\f146"; }
+.card-clock .qi-typhoon::before { content: "\f147"; }
+.card-clock .qi-tornado::before { content: "\f148"; }
+.card-clock .qi-rainstorm::before { content: "\f149"; }
+.card-clock .qi-snow-storm::before { content: "\f14a"; }
+.card-clock .qi-cold-wave::before { content: "\f14b"; }
+.card-clock .qi-gale::before { content: "\f14c"; }
+.card-clock .qi-sandstorm-warning::before { content: "\f14d"; }
+.card-clock .qi-low-temperature-freeze::before { content: "\f14e"; }
+.card-clock .qi-high-temperature::before { content: "\f14f"; }
+.card-clock .qi-heat-wave::before { content: "\f150"; }
+.card-clock .qi-dry-hot-air::before { content: "\f151"; }
+.card-clock .qi-downburst::before { content: "\f152"; }
+.card-clock .qi-avalanche::before { content: "\f153"; }
+.card-clock .qi-lightning::before { content: "\f154"; }
+.card-clock .qi-hail::before { content: "\f155"; }
+.card-clock .qi-frost::before { content: "\f156"; }
+.card-clock .qi-heavy-fog-warning::before { content: "\f157"; }
+.card-clock .qi-low-level-wind-shearl::before { content: "\f158"; }
+.card-clock .qi-haze-warning::before { content: "\f159"; }
+.card-clock .qi-thunder-gust::before { content: "\f15a"; }
+.card-clock .qi-road-icing::before { content: "\f15b"; }
+.card-clock .qi-drought::before { content: "\f15c"; }
+.card-clock .qi-gale-at-sea::before { content: "\f15d"; }
+.card-clock .qi-heat-stroke::before { content: "\f15e"; }
+.card-clock .qi-wildfire::before { content: "\f15f"; }
+.card-clock .qi-grassland-fire::before { content: "\f160"; }
+.card-clock .qi-freeze::before { content: "\f161"; }
+.card-clock .qi-space-weather::before { content: "\f162"; }
+.card-clock .qi-heavy-air-pollution::before { content: "\f163"; }
+.card-clock .qi-low-temperature-rain-and-snow::before { content: "\f164"; }
+.card-clock .qi-strong-convection::before { content: "\f165"; }
+.card-clock .qi-ozone::before { content: "\f166"; }
+.card-clock .qi-heavy-snow-warning::before { content: "\f167"; }
+.card-clock .qi-cold-warning::before { content: "\f168"; }
+.card-clock .qi-continuous-rain::before { content: "\f169"; }
+.card-clock .qi-waterlogging::before { content: "\f16a"; }
+.card-clock .qi-geological-hazard::before { content: "\f16b"; }
+.card-clock .qi-heavy-rainfall::before { content: "\f16c"; }
+.card-clock .qi-severely-falling-temperature::before { content: "\f16d"; }
+.card-clock .qi-snow-disaster::before { content: "\f16e"; }
+.card-clock .qi-wildfire-grassland::before { content: "\f16f"; }
+.card-clock .qi-medical-meteorology::before { content: "\f170"; }
+.card-clock .qi-thunderstorm::before { content: "\f171"; }
+.card-clock .qi-school-closure::before { content: "\f172"; }
+.card-clock .qi-factory-closure::before { content: "\f173"; }
+.card-clock .qi-maritime-risk::before { content: "\f174"; }
+.card-clock .qi-spring-dust::before { content: "\f175"; }
+.card-clock .qi-falling-temperature::before { content: "\f176"; }
+.card-clock .qi-typhoon-and-rainstorm::before { content: "\f177"; }
+.card-clock .qi-severe-cold::before { content: "\f178"; }
+.card-clock .qi-sand-dust::before { content: "\f179"; }
+.card-clock .qi-sea-thunderstorms::before { content: "\f17a"; }
+.card-clock .qi-sea-fog::before { content: "\f17b"; }
+.card-clock .qi-sea-thunder::before { content: "\f17c"; }
+.card-clock .qi-sea-typhoon::before { content: "\f17d"; }
+.card-clock .qi-low-temperature::before { content: "\f17e"; }
+.card-clock .qi-road-ice-and-snow::before { content: "\f17f"; }
+.card-clock .qi-thunderstorm-and-gale::before { content: "\f180"; }
+.card-clock .qi-continuous-low-temperature::before { content: "\f181"; }
+.card-clock .qi-strong-dust::before { content: "\f182"; }
+.card-clock .qi-short-lived-heavy-shower-rain::before { content: "\f183"; }
+.card-clock .qi-flood::before { content: "\f184"; }
+.card-clock .qi-mudflow::before { content: "\f185"; }
+.card-clock .qi-storm-surge::before { content: "\f186"; }
+.card-clock .qi-very-hot-weather::before { content: "\f187"; }
+.card-clock .qi-strong-monsoon-signal::before { content: "\f188"; }
+.card-clock .qi-landslip::before { content: "\f189"; }
+.card-clock .qi-tropical-cyclone::before { content: "\f18a"; }
+.card-clock .qi-fire-danger::before { content: "\f18b"; }
+.card-clock .qi-flooding-in-the-northern-new-territories::before { content: "\f18c"; }
+.card-clock .qi-cold-weather::before { content: "\f18d"; }
+.card-clock .qi-wind::before { content: "\f18e"; }
+.card-clock .qi-snow-ice::before { content: "\f18f"; }
+.card-clock .qi-fog::before { content: "\f190"; }
+.card-clock .qi-coastal-event::before { content: "\f191"; }
+.card-clock .qi-forest-fire::before { content: "\f192"; }
+.card-clock .qi-rain-warning::before { content: "\f193"; }
+.card-clock .qi-rain-flood::before { content: "\f194"; }
+.card-clock .qi-freezing-rain-icing::before { content: "\f195"; }
+.card-clock .qi-ground-frost::before { content: "\f196"; }
+.card-clock .qi-dust-raising-winds::before { content: "\f197"; }
+.card-clock .qi-strong-surface-winds::before { content: "\f198"; }
+.card-clock .qi-hot-day::before { content: "\f199"; }
+.card-clock .qi-warm-night::before { content: "\f19a"; }
+.card-clock .qi-cold-day::before { content: "\f19b"; }
+.card-clock .qi-thunderstorm-and-lightning::before { content: "\f19c"; }
+.card-clock .qi-hailstorm::before { content: "\f19d"; }
+.card-clock .qi-sea-area-warning::before { content: "\f19e"; }
+.card-clock .qi-fishermen-warning::before { content: "\f19f"; }
+.card-clock .qi-low-humidity::before { content: "\f1a0"; }
+.card-clock .qi-accumulated-rain::before { content: "\f1a1"; }
+.card-clock .qi-hazardous-surf-warning::before { content: "\f1a2"; }
+.card-clock .qi-marine-wind-warning::before { content: "\f1a3"; }
+.card-clock .qi-road-weather-alert::before { content: "\f1a4"; }
+.card-clock .qi-thunder-rain::before { content: "\f1a5"; }
+.card-clock .qi-thunder-rain-and-fog::before { content: "\f1a6"; }
+.card-clock .qi-damaging-winds::before { content: "\f1a7"; }
+.card-clock .qi-veld-fire-conditions::before { content: "\f1a8"; }
+.card-clock .qi-weather-advisory::before { content: "\f1a9"; }
+.card-clock .qi-severe-weather-warning::before { content: "\f1aa"; }
+.card-clock .qi-warning-default::before { content: "\f1ab"; }
+.card-clock .qi-sunny-fill::before { content: "\f1ac"; }
+.card-clock .qi-cloudy-fill::before { content: "\f1ad"; }
+.card-clock .qi-few-clouds-fill::before { content: "\f1ae"; }
+.card-clock .qi-partly-cloudy-fill::before { content: "\f1af"; }
+.card-clock .qi-overcast-fill::before { content: "\f1b0"; }
+.card-clock .qi-clear-night-fill::before { content: "\f1b1"; }
+.card-clock .qi-cloudy-night-fill::before { content: "\f1b2"; }
+.card-clock .qi-few-clouds-night-fill::before { content: "\f1b3"; }
+.card-clock .qi-partly-cloudy-night-fill::before { content: "\f1b4"; }
+.card-clock .qi-shower-rain-fill::before { content: "\f1b5"; }
+.card-clock .qi-heavy-shower-rain-fill::before { content: "\f1b6"; }
+.card-clock .qi-thundershower-fill::before { content: "\f1b7"; }
+.card-clock .qi-heavy-thunderstorm-fill::before { content: "\f1b8"; }
+.card-clock .qi-thundershower-with-hail-fill::before { content: "\f1b9"; }
+.card-clock .qi-light-rain-fill::before { content: "\f1ba"; }
+.card-clock .qi-moderate-rain-fill::before { content: "\f1bb"; }
+.card-clock .qi-heavy-rain-fill::before { content: "\f1bc"; }
+.card-clock .qi-extreme-rain-fill::before { content: "\f1bd"; }
+.card-clock .qi-drizzle-rain-fill::before { content: "\f1be"; }
+.card-clock .qi-storm-fill::before { content: "\f1bf"; }
+.card-clock .qi-heavy-storm-fill::before { content: "\f1c0"; }
+.card-clock .qi-severe-storm-fill::before { content: "\f1c1"; }
+.card-clock .qi-freezing-rain-fill::before { content: "\f1c2"; }
+.card-clock .qi-light-to-moderate-rain-fill::before { content: "\f1c3"; }
+.card-clock .qi-moderate-to-heavy-rain-fill::before { content: "\f1c4"; }
+.card-clock .qi-heavy-rain-to-storm-fill::before { content: "\f1c5"; }
+.card-clock .qi-storm-to-heavy-storm-fill::before { content: "\f1c6"; }
+.card-clock .qi-heavy-to-severe-storm-fill::before { content: "\f1c7"; }
+.card-clock .qi-shower-rain-night-fill::before { content: "\f1c8"; }
+.card-clock .qi-heavy-shower-rain-night-fill::before { content: "\f1c9"; }
+.card-clock .qi-rain-fill::before { content: "\f1ca"; }
+.card-clock .qi-light-snow-fill::before { content: "\f1cb"; }
+.card-clock .qi-moderate-snow-fill::before { content: "\f1cc"; }
+.card-clock .qi-heavy-snow-fill::before { content: "\f1cd"; }
+.card-clock .qi-snowstorm-fill::before { content: "\f1ce"; }
+.card-clock .qi-sleet-fill::before { content: "\f1cf"; }
+.card-clock .qi-rain-and-snow-fill::before { content: "\f1d0"; }
+.card-clock .qi-shower-snow-fill::before { content: "\f1d1"; }
+.card-clock .qi-snow-flurry-fill::before { content: "\f1d2"; }
+.card-clock .qi-light-to-moderate-snow-fill::before { content: "\f1d3"; }
+.card-clock .qi-moderate-to-heavy-snow-fill::before { content: "\f1d4"; }
+.card-clock .qi-heavy-snow-to-snowstorm-fill::before { content: "\f1d5"; }
+.card-clock .qi-shower-snow-night-fill::before { content: "\f1d6"; }
+.card-clock .qi-snow-flurry-night-fill::before { content: "\f1d7"; }
+.card-clock .qi-snow-fill::before { content: "\f1d8"; }
+.card-clock .qi-mist-fill::before { content: "\f1d9"; }
+.card-clock .qi-foggy-fill::before { content: "\f1da"; }
+.card-clock .qi-haze-fill::before { content: "\f1db"; }
+.card-clock .qi-sand-fill::before { content: "\f1dc"; }
+.card-clock .qi-dust-fill::before { content: "\f1dd"; }
+.card-clock .qi-duststorm-fill::before { content: "\f1de"; }
+.card-clock .qi-sandstorm-fill::before { content: "\f1df"; }
+.card-clock .qi-dense-fog-fill::before { content: "\f1e0"; }
+.card-clock .qi-strong-fog-fill::before { content: "\f1e1"; }
+.card-clock .qi-moderate-haze-fill::before { content: "\f1e2"; }
+.card-clock .qi-heavy-haze-fill::before { content: "\f1e3"; }
+.card-clock .qi-severe-haze-fill::before { content: "\f1e4"; }
+.card-clock .qi-heavy-fog-fill::before { content: "\f1e5"; }
+.card-clock .qi-extra-heavy-fog-fill::before { content: "\f1e6"; }
+.card-clock .qi-hot-fill::before { content: "\f1e7"; }
+.card-clock .qi-cold-fill::before { content: "\f1e8"; }
+.card-clock .qi-unknown-fill::before { content: "\f1e9"; }

@@ -1,10 +1,13 @@
 {
   "name": "hexo-butterfly-clock-anzhiyu-yang",
-  "version": "2.0.0",
-  "description": "A clock card plugin for theme-butterfly",
+  "version": "2.1.0",
+  "description": "Weather and clock sidebar for Hexo 7/8, Butterfly, Anzhiyu and Solitude",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint ."
+    "build:assets": "node scripts/build-assets.cjs",
+    "test": "node --test test/*.test.js",
+    "test:package": "node scripts/check-package.cjs",
+    "test:integration": "node test/integration.cjs"
   },
   "directories": {
     "lib": "./lib"
@@ -19,12 +22,35 @@
     "clock",
     "butterfly",
     "theme-butterfly",
+    "anzhiyu",
+    "solitude",
     "plugins"
   ],
   "author": "yjh2643408123",
   "license": "Apache-2.0",
   "dependencies": {
     "pug": "^3.0.0"
+  },
+  "devDependencies": {
+    "cssnano": "^7.0.0",
+    "postcss": "^8.0.0",
+    "terser": "^5.0.0",
+    "hexo7": "npm:hexo@7.3.0",
+    "hexo8": "npm:hexo@8.1.2",
+    "hexo-server": "^3.0.0",
+    "hexo-generator-index": "^4.0.0",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-tag": "^2.0.0",
+    "hexo-renderer-marked": "^7.0.1",
+    "hexo-renderer-pug": "^3.0.0",
+    "hexo-renderer-stylus": "^3.0.1",
+    "hexo-theme-anzhiyu": "1.7.0",
+    "hexo-theme-solitude": "4.0.0",
+    "jsdom": "^25.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "repository": {
     "type": "git",

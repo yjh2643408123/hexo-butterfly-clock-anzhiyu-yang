@@ -1,6 +1,15 @@
-.card-widget.card-clock
+.card-widget.card-clock(role='group', aria-label='日期、时间和天气')
   .card-glass
     .card-background
       .card-content
-        #hexo_electric_clock
-          img#card-clock-loading.entered.loading(src=loading, style='height: 120px; width: 100%;', data-ll-status='loading')
+        #hexo_electric_clock(aria-live='off')
+          .clock-row
+            span#card-clock-clockdate.card-clock-clockdate ---- -- --
+            span.card-clock-weather 天气未加载
+            span.card-clock-humidity 💧 --%
+          .clock-row
+            span#card-clock-time.card-clock-time --:--:--
+          .clock-row
+            span.card-clock-windDir --
+            span.card-clock-location --
+            span#card-clock-dackorlight.card-clock-dackorlight --
